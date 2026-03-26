@@ -1,6 +1,53 @@
 ---
 name: executing-plans
-description: Use when you have a written implementation plan to execute in a separate session with review checkpoints
+description: "⚠️ DEPRECATED - Use /opsx:apply instead. This skill is kept for reference only."
+---
+
+# ⚠️ DEPRECATED: Executing Plans
+
+**This skill is DEPRECATED and should NOT be used.**
+
+## Use OpenSpec Instead
+
+The executing-plans workflow has been replaced by **OpenSpec** commands:
+
+| Old | New |
+|-----|-----|
+| `executing-plans` skill | `/opsx:apply change-name` |
+
+## Migration Guide
+
+**Old workflow:**
+```
+brainstorming → writing-plans → executing-plans
+```
+
+**New OpenSpec workflow:**
+```
+/opsx:explore → /opsx:propose → /opsx:apply → /opsx:archive
+```
+
+## What Changed
+
+| Aspect | Old (executing-plans) | New (/opsx:apply) |
+|--------|-----------------------|--------------------|
+| Input | `docs/superpowers/plans/` | `openspec/changes/<name>/tasks.md` |
+| Tracking | Manual | Checkbox tracking in tasks.md |
+| Archive | Manual | `/opsx:archive` |
+
+## When Redirected Here
+
+If you're reading this skill, the system should have redirected you. **Do not proceed with this skill.**
+
+Instead, use:
+- `/opsx:apply change-name` - Implements tasks from OpenSpec change
+
+---
+
+## [LEGACY CONTENT - FOR REFERENCE ONLY]
+
+The content below is the legacy executing-plans skill, kept for reference only. **DO NOT USE.**
+
 ---
 
 # Executing Plans

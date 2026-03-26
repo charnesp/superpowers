@@ -1,5 +1,35 @@
 # Superpowers
 
+## OpenSpec Integration
+
+This project uses **OpenSpec** (https://github.com/Fission-AI/OpenSpec/) for spec-driven development. **All new work must use OpenSpec commands.**
+
+### Quick Start
+
+```
+/opsx:init              → Initialize OpenSpec
+/opsx:explore          → Explore ideas
+/opsx:propose <name>  → Create change
+/opsx:apply <name>    → Implement
+/opsx:archive <name>  → Finalize
+```
+
+### Legacy Skills
+
+The following skills are **deprecated** and replaced by OpenSpec:
+
+| Old | New |
+|-----|-----|
+| `brainstorming` | `/opsx:explore` → `/opsx:propose` |
+| `writing-plans` | `/opsx:propose` |
+| `executing-plans` | `/opsx:apply` |
+
+See [AGENTS.md](AGENTS.md) for complete OpenSpec documentation.
+
+---
+
+
+
 Superpowers is a complete software development workflow for your coding agents, built on top of a set of composable "skills" and some initial instructions that make sure your agent uses them.
 
 ## How it works

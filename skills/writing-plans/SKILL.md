@@ -1,6 +1,53 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: "⚠️ DEPRECATED - Use /opsx:propose instead. This skill is kept for reference only."
+---
+
+# ⚠️ DEPRECATED: Writing Plans
+
+**This skill is DEPRECATED and should NOT be used.**
+
+## Use OpenSpec Instead
+
+The writing-plans workflow has been replaced by **OpenSpec** commands:
+
+| Old | New |
+|-----|-----|
+| `writing-plans` skill | `/opsx:propose change-name` |
+
+## Migration Guide
+
+**Old workflow:**
+```
+brainstorming → writing-plans → executing-plans
+```
+
+**New OpenSpec workflow:**
+```
+/opsx:explore → /opsx:propose → /opsx:apply → /opsx:archive
+```
+
+## What Changed
+
+| Aspect | Old (writing-plans) | New (/opsx:propose) |
+|--------|--------------------|--------------------|
+| Output location | `docs/superpowers/plans/` | `openspec/changes/<name>/` |
+| Artifacts | tasks.md only | proposal, specs, design, tasks |
+| Structure | Plan only | Complete change package |
+
+## When Redirected Here
+
+If you're reading this skill, the system should have redirected you. **Do not proceed with this skill.**
+
+Instead, use:
+- `/opsx:propose change-name` - Creates complete planning artifacts
+
+---
+
+## [LEGACY CONTENT - FOR REFERENCE ONLY]
+
+The content below is the legacy writing-plans skill, kept for reference only. **DO NOT USE.**
+
 ---
 
 # Writing Plans

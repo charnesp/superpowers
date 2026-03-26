@@ -1,0 +1,62 @@
+# OpenSpec Configuration for Superpowers
+# https://github.com/Fission-AI/OpenSpec/
+
+schema: spec-driven
+
+context: |
+  Project: Superpowers - AI Assistant Skills Framework
+  Tech stack: TypeScript/JavaScript, Node.js, Markdown
+  Architecture: Modular skills system with subagent support
+  
+  Key Conventions:
+  - Skills stored in skills/<name>/SKILL.md with YAML frontmatter
+  - Commands stored in commands/
+  - Hooks stored in hooks/
+  - Documentation in docs/
+  - Tests in tests/
+  
+  Skill Structure:
+  - Each skill is self-contained in its directory
+  - SKILL.md contains the complete skill definition
+  - Skills can reference other skills
+  - Subagent-driven development is preferred for complex tasks
+  
+  Code Style:
+  - Markdown-based documentation
+  - YAML frontmatter for metadata
+  - Clear section headers
+  - Practical examples over abstract descriptions
+  
+  Testing Approach:
+  - TDD preferred when applicable
+  - Each skill should be testable
+  - Integration tests for subagent workflows
+
+rules:
+  proposal:
+    - Include clear problem statement
+    - Define scope boundaries (what's in/out)
+    - Identify affected skills and commands
+    - Consider backward compatibility
+    - Include success criteria
+    
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Cover happy path and edge cases
+    - Include error scenarios explicitly
+    - Define acceptance criteria clearly
+    - Keep scenarios focused and testable
+    
+  design:
+    - Reference existing patterns in codebase
+    - Document integration points with other skills
+    - Include file structure and key components
+    - Note any breaking changes
+    - Consider migration path if needed
+    
+  tasks:
+    - Reference required skills explicitly (superpowers:*)
+    - Include verification steps for each task
+    - Mark subagent-driven tasks when applicable
+    - Use checkbox format (- [ ]) for tracking
+    - Include exact file paths and commands
