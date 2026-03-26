@@ -88,6 +88,8 @@ openspec/
 **What:** Creates `openspec/` directory structure
 **Required before:** All other OpenSpec commands
 
+**Status in this project:** ✅ Already initialized. The `openspec/` directory exists with config.yaml.
+
 ### `/opsx:explore`
 **When:** Requirements unclear, need investigation
 **What:** Exploratory conversation, no artifacts created
