@@ -105,18 +105,51 @@ Error scenarios and responses
 How we'll test this
 ```
 
-### tasks.md
+### tasks.md (TDD REQUIRED)
 ```markdown
 # Implementation Tasks: [Change Name]
 
 ## Task 1: [Component Name]
 
-- [ ] **Step 1: [Action]**
-  ```bash
-  # Command or code
+- [ ] **Step 1: RED - Write failing test**
+  Create: `src/example.test.ts`
+  ```typescript
+  test('specific behavior', () => {
+    const result = functionUnderTest(input);
+    expect(result).toBe(expected);
+  });
   ```
-  Expected: [result]
+
+- [ ] **Step 2: Verify RED - Watch it fail**
+  Run: `npm test src/example.test.ts`
+  Expected: FAIL with "function not defined"
+
+- [ ] **Step 3: GREEN - Write minimal implementation**
+  Create: `src/example.ts`
+  ```typescript
+  export function functionUnderTest(input) {
+    return expected;
+  }
+  ```
+
+- [ ] **Step 4: Verify GREEN - Watch it pass**
+  Run: `npm test src/example.test.ts`
+  Expected: PASS
+
+- [ ] **Step 5: REFACTOR - Clean up (if needed)**
+  - Remove duplication
+  - Improve names
+  - Keep tests green
+
+- [ ] **Step 6: Commit**
+  ```bash
+  git add src/example.test.ts src/example.ts
+  git commit -m "feat: add specific feature"
+  ```
 ```
+
+**⚠️ TDD IS MANDATORY:** Every task MUST follow RED-GREEN-REFACTOR cycle.
+**⚠️ NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.**
 
 ## Example
 
@@ -144,11 +177,27 @@ AI:  Creating openspec/changes/add-dark-mode/
 - Can edit artifacts after creation before `/opsx:apply`
 - Each change should be focused and completable
 
+## TDD Requirements
+
+**MANDATORY:** All tasks.md MUST use strict TDD (RED-GREEN-REFACTOR):
+
+1. **RED** - Write failing test first
+2. **Verify RED** - Watch it fail for expected reason
+3. **GREEN** - Write minimal code to pass
+4. **Verify GREEN** - Watch it pass
+5. **REFACTOR** - Clean up while staying green
+6. **Commit** - Frequent commits
+
+**⚠️ Iron Law:** NO production code without a failing test first.
+**⚠️ If code exists before test:** Delete it. Start over.
+
 ## Integration
 
 **Comes after:** `/opsx:explore` (or directly if already clear)
-**Leads to:** `/opsx:apply` (implementation)
-**Requires:** `/opsx:init` (OpenSpec initialized)
+**Leads to:** `/opsx:apply` (implementation with TDD)
+**Requires:** 
+- `/opsx:init` (OpenSpec initialized)
+- `superpowers:test-driven-development` (TDD skill)
 
 ## Red Flags (Don't)
 

@@ -2,9 +2,27 @@
 
 > **AI Agent Instructions for the Superpowers Project**
 
-## ⚠️ CRITICAL: OpenSpec is MANDATORY
+## ⚠️ CRITICAL: OpenSpec + TDD are MANDATORY
 
-**All development work MUST use the OpenSpec framework. NO EXCEPTIONS.**
+**All development work MUST use the OpenSpec framework with STRICT TDD. NO EXCEPTIONS.**
+
+### TDD Requirements (IRON LAW)
+
+**NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.**
+
+Every task MUST follow RED-GREEN-REFACTOR:
+1. **RED** - Write failing test
+2. **Verify RED** - Watch it fail correctly
+3. **GREEN** - Write minimal code to pass
+4. **Verify GREEN** - Watch it pass
+5. **REFACTOR** - Clean up while staying green
+6. **Commit** - Frequent commits
+
+**⚠️ If you write code before the test:** Delete it. Start over.
+**⚠️ If test passes immediately:** It proves nothing. Start over.
+**⚠️ If you skip verification steps:** You're not doing TDD.
+
+**Required skill:** `superpowers:test-driven-development`
 
 ### Required Workflow
 

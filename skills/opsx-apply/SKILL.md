@@ -1,9 +1,20 @@
 ---
 name: opsx-apply
-description: Implement tasks from an OpenSpec change. Works through tasks.md, writing code and checking off items. Supports inline and subagent modes.
+description: Implement tasks from an OpenSpec change using STRICT TDD. Follows RED-GREEN-REFACTOR cycle. NO production code without failing test first.
 ---
 
 # /opsx:apply
+
+## ⚠️ TDD IS MANDATORY
+
+**NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.**
+
+Every task MUST follow the TDD cycle:
+```
+RED → Verify RED → GREEN → Verify GREEN → REFACTOR → Commit
+```
+
+**If you write code before the test:** Delete it. Start over.
 
 ## Overview
 
@@ -30,14 +41,19 @@ Implement tasks from an OpenSpec change. Reads `tasks.md` and works through inco
 - Higher quality via two-stage review
 - Use: `superpowers:subagent-driven-development`
 
-## Process
+## TDD Process (STRICT)
 
-1. **Read tasks.md** - Identify incomplete tasks (`- [ ]`)
-2. **Work through tasks** - One by one, in order
-3. **Write code** - Create/modify files as specified
-4. **Run tests** - Verify as specified in tasks
-5. **Mark complete** - Update `[ ]` → `[x]` in tasks.md
-6. **Commit** - Frequent commits as specified
+For each task, follow EXACTLY:
+
+1. **RED** - Write failing test first (never skip)
+2. **Verify RED** - Run test, confirm it fails for expected reason
+3. **GREEN** - Write minimal code to pass (no more)
+4. **Verify GREEN** - Run test, confirm it passes
+5. **REFACTOR** - Clean up, keep tests green (optional but recommended)
+6. **Mark complete** - Update `[ ]` → `[x]` in tasks.md
+7. **Commit** - Commit after each working cycle
+
+**⚠️ Iron Law:** If you didn't watch the test fail, you don't know if it tests the right thing.
 
 ## Task Status Tracking
 
@@ -84,27 +100,42 @@ If interrupted, `/opsx:apply` will:
 - Identify remaining `[ ]` tasks
 - Continue from where it left off
 
-## Task Structure
+## Task Structure (TDD Format)
 
-Each task should specify:
-- **What** to implement
-- **Files** to create/modify
-- **Tests** to run
-- **Expected** results
-- **Commit** command
+Each task MUST follow TDD steps:
 
 Example:
 ```markdown
-- [ ] **Step 1: Create file**
+- [ ] **Step 1: RED - Write failing test**
+  Create: `src/example.test.ts`
+  ```typescript
+  test('example returns true', () => {
+    expect(example()).toBe(true);
+  });
+  ```
+
+- [ ] **Step 2: Verify RED**
+  Run: `npm test src/example.test.ts`
+  Expected: FAIL with "example is not defined"
+
+- [ ] **Step 3: GREEN - Minimal implementation**
   Create: `src/example.ts`
   ```typescript
   export function example() { return true; }
   ```
-  
-  Test: `npm test src/example.test.ts`
+
+- [ ] **Step 4: Verify GREEN**
+  Run: `npm test src/example.test.ts`
   Expected: PASS
-  
-  Commit: `git add src/example.ts && git commit -m "feat: add example"`
+
+- [ ] **Step 5: REFACTOR (if needed)**
+  Improvements while keeping tests green
+
+- [ ] **Step 6: Commit**
+  ```bash
+  git add src/example.test.ts src/example.ts
+  git commit -m "feat: add example function"
+  ```
 ```
 
 ## Subagent Mode
@@ -125,26 +156,44 @@ AI:  Using subagent-driven-development mode...
      ...
 ```
 
-## Red Flags (Don't)
+## Red Flags (TDD Violations - STOP!)
 
-**Never:**
-- Skip tasks out of order
-- Mark tasks complete without verification
-- Skip tests specified in tasks
-- Implement on main/master without worktree
+**NEVER (Iron Law):**
+- ❌ Write code before test
+- ❌ Skip "Verify RED" step
+- ❌ Skip "Verify GREEN" step
+- ❌ Test passes immediately (proves nothing)
+- ❌ Keep code written before tests
+- ❌ Add features beyond what test requires (YAGNI violation)
+- ❌ Mark tasks complete without watching tests pass
 
-**Always:**
-- Follow task order
-- Run specified tests
-- Mark tasks `[x]` when complete
-- Use worktrees for isolation
+**ALWAYS:**
+- ✅ Write failing test FIRST
+- ✅ Watch test FAIL (correctly)
+- ✅ Write minimal code to pass
+- ✅ Watch test PASS
+- ✅ Commit after each cycle
+- ✅ Delete any code written before tests
+
+**If you violate TDD:** Delete code. Start over.
 
 ## Integration
 
 **Comes after:** `/opsx:propose` (change created)
 **Leads to:** `/opsx:archive` (when complete)
-**May use:** `superpowers:subagent-driven-development`
-**Requires:** `superpowers:using-git-worktrees` (for isolation)
+**Uses (REQUIRED):**
+- `superpowers:test-driven-development` - TDD cycle enforcement
+- `superpowers:subagent-driven-development` - For complex tasks
+- `superpowers:using-git-worktrees` - For isolation
+
+**Subagent Instructions:**
+When dispatching subagents for implementation, they MUST:
+1. Follow `superpowers:test-driven-development` skill
+2. Write failing test first
+3. Watch it fail
+4. Write minimal code
+5. Watch it pass
+6. Only then mark task complete
 
 ## When to Stop
 
