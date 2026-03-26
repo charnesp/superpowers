@@ -130,21 +130,23 @@ Start a new session in your chosen platform and ask for something that should tr
 
 ## The Basic Workflow
 
-1. **brainstorming** - Activates before writing code. Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document.
+This project uses **OpenSpec** for spec-driven development. The workflow is:
 
-2. **using-git-worktrees** - Activates after design approval. Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.
+1. **`/opsx:explore`** - Think through ideas, investigate problems, clarify requirements (optional, for unclear requirements)
 
-3. **writing-plans** - Activates with approved design. Breaks work into bite-sized tasks (2-5 minutes each). Every task has exact file paths, complete code, verification steps.
+2. **`/opsx:propose`** - Create OpenSpec change with proposal, specs, design, and tasks
 
-4. **subagent-driven-development** or **executing-plans** - Activates with plan. Dispatches fresh subagent per task with two-stage review (spec compliance, then code quality), or executes in batches with human checkpoints.
+3. **`/opsx:apply`** - Implement tasks from the change. Uses `subagent-driven-development` for complex work with two-stage review
 
-5. **test-driven-development** - Activates during implementation. Enforces RED-GREEN-REFACTOR: write failing test, watch it fail, write minimal code, watch it pass, commit. Deletes code written before tests.
+4. **`/opsx:archive`** - Finalize completed change, sync specs, move to archive
 
-6. **requesting-code-review** - Activates between tasks. Reviews against plan, reports issues by severity. Critical issues block progress.
+**Supporting skills still active:**
+- **using-git-worktrees** - Creates isolated workspace on new branch
+- **test-driven-development** - Enforces RED-GREEN-REFACTOR during implementation
+- **requesting-code-review** - Reviews against plan between tasks
+- **finishing-a-development-branch** - Presents options (merge/PR/keep/discard), cleans up worktree
 
-7. **finishing-a-development-branch** - Activates when tasks complete. Verifies tests, presents options (merge/PR/keep/discard), cleans up worktree.
-
-**The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
+**See [AGENTS.md](AGENTS.md) for complete OpenSpec documentation and migration guide.**
 
 ## What's Inside
 
@@ -157,10 +159,18 @@ Start a new session in your chosen platform and ask for something that should tr
 - **systematic-debugging** - 4-phase root cause process (includes root-cause-tracing, defense-in-depth, condition-based-waiting techniques)
 - **verification-before-completion** - Ensure it's actually fixed
 
-**Collaboration** 
-- **brainstorming** - Socratic design refinement
-- **writing-plans** - Detailed implementation plans
-- **executing-plans** - Batch execution with checkpoints
+**OpenSpec Commands** (Primary Workflow)
+- **`/opsx:explore`** - Explore ideas before committing to a change
+- **`/opsx:propose`** - Create change with complete planning artifacts
+- **`/opsx:apply`** - Implement tasks from OpenSpec change
+- **`/opsx:archive`** - Archive completed change
+
+**⚠️ DEPRECATED - Replaced by OpenSpec:**
+- ~~**brainstorming**~~ → Use `/opsx:explore` and `/opsx:propose`
+- ~~**writing-plans**~~ → Use `/opsx:propose`
+- ~~**executing-plans**~~ → Use `/opsx:apply`
+
+**Active Collaboration Skills**
 - **dispatching-parallel-agents** - Concurrent subagent workflows
 - **requesting-code-review** - Pre-review checklist
 - **receiving-code-review** - Responding to feedback
