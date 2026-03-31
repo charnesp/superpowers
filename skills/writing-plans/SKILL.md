@@ -1,56 +1,31 @@
 ---
 name: writing-plans
-description: "⚠️ DEPRECATED - Use /opsx:propose instead. This skill is kept for reference only."
+description: "⚠️ DEPRECATED — Prefer OpenSpec (propose/plan phase). If missing: npm install -g @fission-ai/openspec@latest then openspec init; use generated skills. Legacy body is reference only."
 ---
 
-# ⚠️ DEPRECATED: Writing Plans
+# ⚠️ DEPRECATED — Use OpenSpec instead of this skill
 
-**This skill is DEPRECATED and should NOT be used.**
+Projects that follow [AGENTS.md](../../AGENTS.md) **must** produce plans and task breakdowns through **OpenSpec** (e.g. change packages under `openspec/changes/`), not ad-hoc files under `docs/superpowers/plans/`.
 
-## Use OpenSpec Instead
+## When OpenSpec is missing or not yet initialized
 
-The writing-plans workflow has been replaced by **OpenSpec** commands:
+**Check first:** from the **project root**, see whether `openspec/` exists and the `openspec` CLI is available (`openspec --help` or equivalent).
 
-| Old | New |
-|-----|-----|
-| `writing-plans` skill | `/opsx:propose change-name` |
+**If the CLI is missing, or there is no `openspec/` layout, you MUST install and initialize explicitly:**
 
-## Migration Guide
-
-**Old workflow:**
-```
-brainstorming → writing-plans → executing-plans
+```bash
+npm install -g @fission-ai/openspec@latest
+cd /path/to/project-root
+openspec init
 ```
 
-**New OpenSpec workflow:**
-```
-/opsx:explore → /opsx:propose → /opsx:apply → /opsx:archive
-```
+Then follow the **OpenSpec “propose” / planning workflow** from the generated skills and [OpenSpec documentation](https://github.com/Fission-AI/OpenSpec/).
 
-## What Changed
-
-| Aspect | Old (writing-plans) | New (/opsx:propose) |
-|--------|--------------------|--------------------|
-| Output location | `docs/superpowers/plans/` | `openspec/changes/<name>/` |
-| Artifacts | tasks.md only | proposal, specs, design, tasks |
-| Structure | Plan only | Complete change package |
-
-## When Redirected Here
-
-If you're reading this skill, the system should have redirected you. **Do not proceed with this skill.**
-
-Instead, use:
-- `/opsx:propose change-name` - Creates complete planning artifacts
+**Do not** follow the legacy plan format below for active work—**reference only**.
 
 ---
 
-## [LEGACY CONTENT - FOR REFERENCE ONLY]
-
-The content below is the legacy writing-plans skill, kept for reference only. **DO NOT USE.**
-
----
-
-# Writing Plans
+# [LEGACY / REFERENCE] Writing Plans
 
 ## Overview
 

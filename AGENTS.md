@@ -11,6 +11,7 @@
 **NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.**
 
 Every task MUST follow RED-GREEN-REFACTOR:
+
 1. **RED** - Write failing test
 2. **Verify RED** - Watch it fail correctly
 3. **GREEN** - Write minimal code to pass
@@ -24,234 +25,119 @@ Every task MUST follow RED-GREEN-REFACTOR:
 
 **Required skill:** `superpowers:test-driven-development`
 
-### Required Workflow
+## OpenSpec: official tool (not bundled skills)
 
+OpenSpec is distributed as an npm package. **This repository does not ship OpenSpec workflow skills** (no `opsx-*` skills here). After you initialize a project with the CLI, **skills and artifacts for the OpenSpec workflow are generated and installed by `openspec init`**—use those, plus the upstream docs.
+
+### One-time: install the CLI
+
+```bash
+npm install -g @fission-ai/openspec@latest
 ```
-/opsx:init              → Initialize (first time only)
-/opsx:explore          → Explore ideas (optional, for unclear requirements)
-/opsx:propose <name>   → Create change with specs
-/opsx:apply <name>     → Implement
-/opsx:archive <name>   → Finalize
+
+### Per project: initialize OpenSpec
+
+From the root of the project you are working on:
+
+```bash
+cd your-project
+openspec init
 ```
 
-### Prohibited Actions
+This creates the `openspec/` layout and **materializes the agent skills** (commands, workflows) that belong to OpenSpec. **Always follow the generated skills and [OpenSpec documentation](https://github.com/Fission-AI/OpenSpec/)** for explore / propose / apply / archive and related steps—do not assume slash-commands from an older fork of Superpowers.
 
-**NEVER do these directly - always use OpenSpec:**
+### Deprecated Superpowers skills (redirect + bootstrap)
 
-- ❌ Use `brainstorming` skill → **Use `/opsx:explore` or `/opsx:propose`**
-- ❌ Use `writing-plans` skill → **Use `/opsx:propose`**
-- ❌ Use `executing-plans` skill → **Use `/opsx:apply`**
-- ❌ Create specs in `docs/superpowers/specs/` → **Use `/opsx:propose` → `openspec/changes/<name>/`**
-- ❌ Create plans in `docs/superpowers/plans/` → **Use `/opsx:propose` → `openspec/changes/<name>/tasks.md`**
-- ❌ Start implementation without a change → **Use `/opsx:propose` first**
+The skills **`brainstorming`**, **`writing-plans`**, and **`executing-plans`** are still present so tools can surface a clear redirect. They are **not** the supported path for this project’s workflow.
 
-### When a User Requests Legacy Skills
+If any of them is invoked: **read the skill header first**. It instructs you to verify OpenSpec; **if the CLI or `openspec/` is missing, you MUST run** `npm install -g @fission-ai/openspec@latest` **then** `openspec init` **at the project root**, then continue with **OpenSpec’s generated skills**—not the legacy body of those files (kept as reference only).
 
-If the user invokes a deprecated skill, you MUST:
+### Prohibited
 
-1. **REFUSE** to execute the legacy workflow
-2. **EXPLAIN** why OpenSpec is required
-3. **REDIRECT** to the equivalent OpenSpec command
-
-**Example response:**
-```
-⚠️ The brainstorming skill is DEPRECATED.
-
-This project now requires OpenSpec for all development work.
-
-Instead of brainstorming, please use:
-- /opsx:explore "your idea"  → For exploration
-- /opsx:propose your-name    → For creating the spec
-
-Would you like me to run one of these instead?
-```
+- ❌ **Adding or maintaining `opsx-*` skills in this repo** — they come from `openspec init`, not from `skills/` here.
+- ❌ **Treating this repo as the source of truth for OpenSpec CLI behavior** — use the installed package version and upstream docs.
+- ❌ Create specs in `docs/superpowers/specs/` for OpenSpec-driven work → use **`openspec/changes/<name>/`** per OpenSpec after `openspec init`.
+- ❌ Create plans in `docs/superpowers/plans/` for OpenSpec-driven work → use the change’s **`tasks.md`** under `openspec/changes/`.
+- ❌ Start implementation without an OpenSpec change when the project uses OpenSpec.
 
 ## Project Context
 
 ### About Superpowers
+
 - **Type:** AI Assistant Skills Framework
 - **Tech Stack:** TypeScript/JavaScript, Node.js, Markdown
 - **Architecture:** Modular skills system with subagent support
 
 ### Key Directories
-- `skills/` - All skills (SKILL.md format)
+
+- `skills/` - Superpowers skills (`SKILL.md` format). **Excludes** OpenSpec CLI workflow skills (those are installed by `openspec init` in each project).
 - `commands/` - Command definitions
 - `hooks/` - Hook configurations
-- `openspec/` - **OpenSpec directory (REQUIRED)**
 - `docs/` - Documentation
 - `tests/` - Test suites
+- `openspec/` - **Present only after `openspec init` in that project** — not a hand-maintained copy in this framework repo unless you intentionally version your project layout.
 
 ### Skill Structure
-Each skill is self-contained:
+
+Each Superpowers skill is self-contained:
+
 ```
 skills/<name>/
 └── SKILL.md     # Complete skill definition with YAML frontmatter
 ```
 
-### OpenSpec Structure
-```
-openspec/
-├── config.yaml              # Project configuration
-├── specs/                   # Main specifications
-├── schemas/                 # Custom schemas
-└── changes/
-    ├── <change-name>/       # Active changes
-    └── archive/             # Completed changes
-```
+### OpenSpec layout (after `openspec init`)
 
-## OpenSpec Commands Reference
+See the [OpenSpec repository](https://github.com/Fission-AI/OpenSpec/) for the authoritative directory layout (e.g. `openspec/config.yaml`, `changes/`, `specs/`, etc.). It is produced by the CLI, not edited here as a duplicate source of workflow skills.
 
-### `/opsx:init`
-**When:** First time setup, or after cloning
-**What:** Creates `openspec/` directory structure
-**Required before:** All other OpenSpec commands
+## Using OpenSpec in practice
 
-**Status in this project:** ✅ Already initialized. The `openspec/` directory exists with config.yaml.
+1. Ensure the CLI is installed (`npm install -g @fission-ai/openspec@latest`).
+2. Run `openspec init` in the project root if `openspec/` is missing.
+3. Follow the **skills generated by `openspec init`** and the official docs:
+   - [OpenSpec — main docs](https://github.com/Fission-AI/OpenSpec/)
+   - [Commands](https://github.com/Fission-AI/OpenSpec/blob/main/docs/commands.md)
+   - [Workflow (opsx)](https://github.com/Fission-AI/OpenSpec/blob/main/docs/opsx.md)
+4. When apply work is **fully done and verified**, invoke **`openspec-archive-change`** (from the generated skills) so the change is **archived**—do not stop after apply alone.
 
-### `/opsx:explore`
-**When:** Requirements unclear, need investigation
-**What:** Exploratory conversation, no artifacts created
-**Leads to:** `/opsx:propose`
+## Superpowers skills that complement implementation
 
-### `/opsx:propose <name>`
-**When:** Ready to formalize a change
-**What:** Creates complete change with:
-- `proposal.md` - Problem, solution, scope
-- `specs/` - Requirements and scenarios
-- `design.md` - Technical approach
-- `tasks.md` - Implementation checklist
-**Required:** `/opsx:init` first
+These skills remain useful **alongside** OpenSpec (for example during apply / implementation):
 
-### `/opsx:apply <name>`
-**When:** Ready to implement
-**What:** Executes tasks from `tasks.md`
-**Modes:** Inline (default) or subagent-driven
-**Required:** `/opsx:propose` first
-
-### `/opsx:archive <name>`
-**When:** Implementation complete
-**What:** Finalizes change, syncs specs, moves to archive
-**Optional:** Syncs delta specs to `openspec/specs/`
-**Required:** `/opsx:apply` complete
-
-## Legacy Skills (DEPRECATED)
-
-The following skills exist for reference but **MUST NOT BE USED**:
-
-| Skill | Status | Replacement |
-|-------|--------|-------------|
-| `brainstorming` | ⚠️ DEPRECATED | `/opsx:explore` → `/opsx:propose` |
-| `writing-plans` | ⚠️ DEPRECATED | `/opsx:propose` |
-| `executing-plans` | ⚠️ DEPRECATED | `/opsx:apply` |
-
-**If these skills are referenced in old plans:**
-- Treat them as historical reference only
-- Do not execute their workflows
-- Redirect to OpenSpec equivalents
-
-## Active Skills (Usable Within OpenSpec)
-
-These skills can be used **within** the OpenSpec framework:
-
-- `subagent-driven-development` - Used by `/opsx:apply` for complex tasks
-- `using-git-worktrees` - Used for isolation in `/opsx:apply`
-- `finishing-a-development-branch` - Used by `/opsx:archive`
-- `test-driven-development` - Used during implementation
-- `requesting-code-review` - Used for reviews
-
-## Workflow Examples
-
-### Example 1: Simple Feature
-
-```
-User: "Add a dark mode toggle"
-
-AI:  I'll use OpenSpec to handle this feature.
-
-     /opsx:explore "dark mode implementation options"
-     → [Discussion about approaches]
-
-     /opsx:propose add-dark-mode
-     → [Creates change with all artifacts]
-
-     /opsx:apply add-dark-mode
-     → [Implements tasks]
-
-     /opsx:archive add-dark-mode
-     → [Finalizes and syncs specs]
-```
-
-### Example 2: Clear Requirements
-
-```
-User: "Fix the login bug where session expires too fast"
-
-AI:  Requirements are clear, skipping exploration.
-
-     /opsx:propose fix-session-timeout
-     → [Creates change with proposal, specs, design, tasks]
-
-     /opsx:apply fix-session-timeout
-     → [Implements the fix]
-
-     /opsx:archive fix-session-timeout
-     → [Archives completed change]
-```
+- `subagent-driven-development`
+- `using-git-worktrees`
+- `finishing-a-development-branch`
+- `test-driven-development`
+- `requesting-code-review`
 
 ## Critical Rules
 
-1. **Always check for `openspec/` directory** before any new feature
-2. **If `openspec/` missing:** Run `/opsx:init` first
-3. **Never create specs outside `openspec/changes/`**
-4. **Never start implementation without a change**
-5. **Always archive completed changes**
+1. **Before starting feature work**, confirm the project has been initialized with **`openspec init`** when using OpenSpec.
+2. **Do not duplicate OpenSpec workflow** by adding `opsx-*` files under this repo’s `skills/`.
+3. **Never place OpenSpec change artifacts outside** the `openspec/` tree defined by the CLI and docs.
+4. **Never start implementation without a change** when the project is OpenSpec-driven.
+5. **Archive completed changes** with **`openspec-archive-change`** (or equivalent in your generated skills), per OpenSpec’s docs—never leave a finished change unarchived.
 
-## Error Scenarios
+## Error scenario: OpenSpec not initialized
 
-### "Use brainstorming skill"
-```
-User: "Use brainstorming skill"
-
-AI:  ⚠️ The brainstorming skill is DEPRECATED.
-
-     This project now uses OpenSpec for all development:
-     - /opsx:explore "your idea" → For exploration
-     - /opsx:propose your-name → For creating specs
-
-     Which would you like to use?
-```
-
-### "Create a plan for..."
-```
-User: "Create a plan for the new feature"
-
-AI:  I'll create an OpenSpec change for this feature.
-
-     /opsx:propose new-feature-name
-     → [Creates complete change package]
-```
-
-### OpenSpec Not Initialized
 ```
 User: "Add authentication"
 
-AI:  ⚠️ OpenSpec is not initialized in this project.
+AI: OpenSpec is required but the project may not be initialized yet.
 
-     Let me initialize it first:
+  Run:
+  npm install -g @fission-ai/openspec@latest
+  cd <project-root>
+  openspec init
 
-     /opsx:init
-     → [Creates openspec/ structure]
-
-     Now we can proceed:
-     /opsx:explore "authentication options"
-     ...
+  Then follow the generated OpenSpec skills and docs for propose → apply → archive.
 ```
 
 ## Resources
 
-- OpenSpec Documentation: https://github.com/Fission-AI/OpenSpec/
-- Commands Reference: https://github.com/Fission-AI/OpenSpec/blob/main/docs/commands.md
-- Workflow Guide: https://github.com/Fission-AI/OpenSpec/blob/main/docs/opsx.md
+- OpenSpec: https://github.com/Fission-AI/OpenSpec/
+- Commands: https://github.com/Fission-AI/OpenSpec/blob/main/docs/commands.md
+- Workflow: https://github.com/Fission-AI/OpenSpec/blob/main/docs/opsx.md
 
 ## Philosophy
 
@@ -264,6 +150,7 @@ AI:  ⚠️ OpenSpec is not initialized in this project.
 ```
 
 **OpenSpec ensures:**
+
 - Clear specs before implementation
 - Traceable changes
 - Preserved history
@@ -272,5 +159,5 @@ AI:  ⚠️ OpenSpec is not initialized in this project.
 
 ---
 
-**Last Updated:** 2025-03-26
-**Version:** 1.0 (OpenSpec Integration)
+**Last Updated:** 2026-03-31  
+**Version:** 1.1 (OpenSpec via official CLI + `openspec init`)

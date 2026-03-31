@@ -1,56 +1,31 @@
 ---
 name: executing-plans
-description: "⚠️ DEPRECATED - Use /opsx:apply instead. This skill is kept for reference only."
+description: "⚠️ DEPRECATED — Prefer OpenSpec (apply/archive). If missing: npm install -g @fission-ai/openspec@latest then openspec init; use generated skills. Legacy body is reference only."
 ---
 
-# ⚠️ DEPRECATED: Executing Plans
+# ⚠️ DEPRECATED — Use OpenSpec instead of this skill
 
-**This skill is DEPRECATED and should NOT be used.**
+Projects that follow [AGENTS.md](../../AGENTS.md) **must** implement work through the **OpenSpec apply (and archive) workflow** using skills produced by `openspec init`, not this legacy executor.
 
-## Use OpenSpec Instead
+## When OpenSpec is missing or not yet initialized
 
-The executing-plans workflow has been replaced by **OpenSpec** commands:
+**Check first:** from the **project root**, see whether `openspec/` exists and the `openspec` CLI is available (`openspec --help` or equivalent).
 
-| Old | New |
-|-----|-----|
-| `executing-plans` skill | `/opsx:apply change-name` |
+**If the CLI is missing, or there is no `openspec/` layout, you MUST install and initialize explicitly:**
 
-## Migration Guide
-
-**Old workflow:**
-```
-brainstorming → writing-plans → executing-plans
+```bash
+npm install -g @fission-ai/openspec@latest
+cd /path/to/project-root
+openspec init
 ```
 
-**New OpenSpec workflow:**
-```
-/opsx:explore → /opsx:propose → /opsx:apply → /opsx:archive
-```
+Then follow the **OpenSpec implementation workflow** from the generated skills and [OpenSpec documentation](https://github.com/Fission-AI/OpenSpec/).
 
-## What Changed
-
-| Aspect | Old (executing-plans) | New (/opsx:apply) |
-|--------|-----------------------|--------------------|
-| Input | `docs/superpowers/plans/` | `openspec/changes/<name>/tasks.md` |
-| Tracking | Manual | Checkbox tracking in tasks.md |
-| Archive | Manual | `/opsx:archive` |
-
-## When Redirected Here
-
-If you're reading this skill, the system should have redirected you. **Do not proceed with this skill.**
-
-Instead, use:
-- `/opsx:apply change-name` - Implements tasks from OpenSpec change
+**Do not** run the legacy execution process below for active work—**reference only**.
 
 ---
 
-## [LEGACY CONTENT - FOR REFERENCE ONLY]
-
-The content below is the legacy executing-plans skill, kept for reference only. **DO NOT USE.**
-
----
-
-# Executing Plans
+# [LEGACY / REFERENCE] Executing Plans
 
 ## Overview
 

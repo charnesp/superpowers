@@ -47,9 +47,12 @@ Skills use Claude Code tool names. Non-CC platforms: see `references/codex-tools
 digraph skill_flow {
     "User message received" [shape=doublecircle];
     "About to EnterPlanMode?" [shape=doublecircle];
-    "Already brainstormed?" [shape=diamond];
-    "Invoke brainstorming skill" [shape=box];
-    "Might any skill apply?" [shape=diamond];
+    "Already brainstormed? (OpenSpec proposal exists)" [shape=diamond];
+    "OpenSpec-explore then OpenSpec-propose (complex); OpenSpec-propose only (simple)" [shape=box];
+    "Implementing OpenSpec change?" [shape=diamond];
+    "Invoke openspec-apply-change (implementation)" [shape=box];
+    "Invoke openspec-archive-change (when change complete)" [shape=box];
+    "Might any skill apply?\n(incl. complementary during apply)" [shape=diamond];
     "Invoke Skill tool" [shape=box];
     "Announce: 'Using [skill] to [purpose]'" [shape=box];
     "Has checklist?" [shape=diamond];
@@ -57,21 +60,31 @@ digraph skill_flow {
     "Follow skill exactly" [shape=box];
     "Respond (including clarifications)" [shape=doublecircle];
 
-    "About to EnterPlanMode?" -> "Already brainstormed?";
-    "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
-    "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
-    "Invoke brainstorming skill" -> "Might any skill apply?";
+    "About to EnterPlanMode?" -> "Already brainstormed? (OpenSpec proposal exists)";
+    "Already brainstormed? (OpenSpec proposal exists)" -> "OpenSpec-explore then OpenSpec-propose (complex); OpenSpec-propose only (simple)" [label="no"];
+    "Already brainstormed? (OpenSpec proposal exists)" -> "Implementing OpenSpec change?" [label="yes"];
+    "Implementing OpenSpec change?" -> "Invoke openspec-apply-change (implementation)" [label="yes"];
+    "Implementing OpenSpec change?" -> "Might any skill apply?\n(incl. complementary during apply)" [label="no"];
+    "Invoke openspec-apply-change (implementation)" -> "Might any skill apply?\n(incl. complementary during apply)";
+    "OpenSpec-explore then OpenSpec-propose (complex); OpenSpec-propose only (simple)" -> "Might any skill apply?\n(incl. complementary during apply)";
 
-    "User message received" -> "Might any skill apply?";
-    "Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
-    "Might any skill apply?" -> "Respond (including clarifications)" [label="definitely not"];
+    "User message received" -> "Might any skill apply?\n(incl. complementary during apply)";
+    "Might any skill apply?\n(incl. complementary during apply)" -> "Invoke Skill tool" [label="yes, even 1%"];
+    "Might any skill apply?\n(incl. complementary during apply)" -> "Respond (including clarifications)" [label="definitely not"];
     "Invoke Skill tool" -> "Announce: 'Using [skill] to [purpose]'";
     "Announce: 'Using [skill] to [purpose]'" -> "Has checklist?";
     "Has checklist?" -> "Create TodoWrite todo per item" [label="yes"];
     "Has checklist?" -> "Follow skill exactly" [label="no"];
     "Create TodoWrite todo per item" -> "Follow skill exactly";
+    "Follow skill exactly" -> "Might any skill apply?\n(incl. complementary during apply)" [label="continue apply / more skills"];
+    "Follow skill exactly" -> "Invoke openspec-archive-change (when change complete)" [label="OpenSpec apply done; archive"];
+    "Invoke openspec-archive-change (when change complete)" -> "Respond (including clarifications)";
 }
 ```
+
+The **`Might any skill apply?`** step is not only for the first pass after explore/propose: **during the apply phase** (including after **`openspec-apply-change`**), run it again whenever it makes sense to **load complementary skills**—for example **test-driven-development**, **subagent-driven-development**, **requesting-code-review**, **using-git-worktrees**, or domain-specific skills—so implementation stays aligned with Superpowers + OpenSpec.
+
+**Closure:** once **all** work for the OpenSpec change is done (tasks from the change verified, implementation complete), **do not skip** **`openspec-archive-change`**—invoke it so the change is archived per OpenSpec before you treat the lifecycle as finished.
 
 ## Red Flags
 
@@ -96,11 +109,15 @@ These thoughts mean STOP—you're rationalizing:
 
 When multiple skills could apply, use this order:
 
-1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
-2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+1. **Process / workflow skills first** — they define HOW to approach the task.
+   - **OpenSpec** (skills produced after `openspec init`): if there is **no OpenSpec proposal yet**, use **OpenSpec-explore** then **OpenSpec-propose** when the request is **complex**; for a **simple** request, use **OpenSpec-propose** alone. If the OpenSpec CLI or `openspec/` layout is missing, run **`npm install -g @fission-ai/openspec@latest`** then **`openspec init`** at the project root first. **Implementing** an approved OpenSpec change requires **`openspec-apply-change`**. When **all apply work is finished and verified**, **`openspec-archive-change`** is required to **archive** the change—do not omit it. The **`brainstorming`** skill is **deprecated** (bootstrap/redirect only—read its header; do not use its legacy body for active work).
+   - For **bugs / regressions**: **debugging** (and related) before narrow fixes.
+2. **Implementation skills second** (e.g. frontend-design, mcp-builder) — execution once the process is set.
 
-"Let's build X" → brainstorming first, then implementation skills.
-"Fix this bug" → debugging first, then domain-specific skills.
+Examples:
+
+- "Let's build X" → OpenSpec ready (CLI + `openspec/`); **OpenSpec-explore → OpenSpec-propose** if complex, else **OpenSpec-propose**; **`openspec-apply-change`** for implementation; complementary skills during apply as needed; when complete, **`openspec-archive-change`**.
+- "Fix this bug" → debugging first, then domain-specific skills.
 
 ## Skill Types
 
